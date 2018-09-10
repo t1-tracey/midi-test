@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>MIDI test</title>
+</head>
+
+<body>
+
+<p id="output">
+
+</p>
+
+</body>
+
+<script>
+
+var output = document.getElementById('output');
+
+navigator.requestMIDIAccess()
+  .then(function(access) {
+
+     // Get lists of available MIDI controllers
+     const inputs = access.inputs.values();
+     const outputs = access.outputs.values();
+
+     access.onstatechange = function(e) {
+
+       // Print information about the (dis)connected MIDI controller
+       console.log(e.port.name, e.port.manufacturer, e.port.state);
+
+       if (e.port.state == 'disconnected') {
+         alert("You disconnected your MIDI controller");
+         output.innerHTML += "<br/>:("
+       }
+
+       if (e.port.state == 'connected') {
+         alert("You connected your MIDI controller!");
+         output.innerHTML += "<br/> :D"
+       }
+     };
+  });
+
+
+</script>
+
+</html>
